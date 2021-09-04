@@ -49,13 +49,23 @@ struct TextMenuItem: View {
     }
     
     private func widthOf(text: String) -> CGFloat {
+        #if os(iOS)
         return text.widthOfString(
             usingFont: UIFont.systemFont(ofSize: 12, weight: .regular))
+        #else
+        return text.widthOfString(
+            usingFont: NSFont.systemFont(ofSize: 12, weight: .regular))
+        #endif
     }
     
     private func heightOf(text: String) -> CGFloat {
+        #if os(iOS)
         return text.heightOfString(
             usingFont: UIFont.systemFont(ofSize: 12, weight: .regular))
+        #else
+        return text.heightOfString(
+            usingFont: NSFont.systemFont(ofSize: 12, weight: .regular))
+        #endif
     }
 }
 

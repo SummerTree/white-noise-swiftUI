@@ -8,7 +8,11 @@
 
 import Foundation
 import AVFoundation
+#if os(iOS)
 import UIKit
+#else
+import AppKit
+#endif
 import MediaPlayer
 
 class NoisePlayer {
@@ -49,11 +53,13 @@ extension NoisePlayer {
 
     func stop() {
         player?.pause()
+        #if os(iOS)
         do {
             try AVAudioSession.sharedInstance().setActive(false)
         } catch {
             print("Error setting audio session active=false")
         }
+        #endif
     }
 }
 
@@ -67,6 +73,7 @@ extension NoisePlayer {
 // MARK: sharing player
 extension NoisePlayer {
     private func makeActiveAudioSession() {
+        #if os(iOS)
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setCategory(AVAudioSession.Category.playback)
@@ -74,10 +81,13 @@ extension NoisePlayer {
         } catch {
             print("Failed to set audio session category.  Error: \(error)")
         }
+        #endif
     }
     
     private func setupRemoteTransportControls() {
+        #if os(iOS)
         UIApplication.shared.beginReceivingRemoteControlEvents()
+        #endif
         let commandCenter = MPRemoteCommandCenter.shared()
         weak var weakSelf = self
         commandCenter.pauseCommand.addTarget { (event) -> MPRemoteCommandHandlerStatus in
@@ -93,6 +103,7 @@ extension NoisePlayer {
     }
     
     private func setupNowPlaying() {
+        #if os(iOS)
         if
             let currentAudio = currentAudio,
             let image = UIImage(named: currentAudio.audioImage)
@@ -106,5 +117,6 @@ extension NoisePlayer {
                                         as [String : Any]
             MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
         }
+        #endif
     }
 }

@@ -8,15 +8,28 @@
 
 import SwiftUI
 
+#if os(macOS)
+extension NSTableView {
+  open override func viewDidMoveToWindow() {
+    super.viewDidMoveToWindow()
+
+    backgroundColor = NSColor.clear
+    enclosingScrollView!.drawsBackground = false
+  }
+}
+#endif
+
 struct MusicTrackTableView: View {
     @ObservedObject var viewModel: MusicTracksTableViewModel
 
     init(viewModel: MusicTracksTableViewModel) {
         self.viewModel = viewModel
+        #if os(iOS)
         UITableView.appearance().showsVerticalScrollIndicator = false
         UITableViewCell.appearance().selectionStyle = .none
         UITableViewCell.appearance().backgroundColor = .clear
         UITableView.appearance().backgroundColor = .clear
+        #endif
     }
 
     var body: some View {

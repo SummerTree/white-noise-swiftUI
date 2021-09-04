@@ -8,6 +8,12 @@
 
 import SwiftUI
 
+#if os(iOS)
+import UIKit
+#else
+import AppKit
+#endif
+
 class Configurator {
     private let categoryRepository: CategoryRepository
     private let player: NoisePlayer
@@ -16,6 +22,7 @@ class Configurator {
         player = NoisePlayer()
     }
 
+    #if os(iOS)
     func configure() -> UIViewController {
         let mainScreenViewModel = MainScreenViewModel(
             categoryRepository: categoryRepository,
@@ -26,4 +33,16 @@ class Configurator {
         let contentView = MainScreenView(viewModel: mainScreenViewModel)
         return UIHostingController(rootView: contentView)
     }
+    #else
+    func configure() -> NSViewController {
+        let mainScreenViewModel = MainScreenViewModel(
+            categoryRepository: categoryRepository,
+            player: player,
+            categoryMenuItemViewModelFactory: CategoryMenuFactory(),
+            musicTrackViewModelFactory: MusicTracksFactory()
+        )
+        let contentView = MainScreenView(viewModel: mainScreenViewModel)
+        return NSHostingController(rootView: contentView)
+    }
+    #endif
 }

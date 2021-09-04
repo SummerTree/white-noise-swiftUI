@@ -58,8 +58,15 @@ struct MusicTrackTableCellView: View {
                     if (isPlayed) {
                         Image("Music Playing")
                             .renderingMode(.original)
+                    } else {
+                        Image("Play")
+                            .renderingMode(.original)
+                            .resizable()
+                            .frame(width: 24, height: 24)
                     }
                 }
+                .frame(width: 24, height: 24)
+                .buttonStyle(PlainButtonStyle())
             }
             .frame(height: 60)
             .shadow(radius: 6)
@@ -75,6 +82,7 @@ struct MusicTrackTableCellView: View {
                     .foregroundColor(.graySilver)
                     .lineLimit(nil)
             }
+            Spacer()
         }
         .foregroundColor(.clear)
     }

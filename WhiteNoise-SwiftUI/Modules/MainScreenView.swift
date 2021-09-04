@@ -13,7 +13,9 @@ struct MainScreenView: View {
 
     init(viewModel: MainScreenViewModel) {
         self.viewModel = viewModel
+        #if os(iOS)
         UITableView.appearance().separatorStyle = .none
+        #endif
     }
 
     var body: some View {
@@ -23,11 +25,22 @@ struct MainScreenView: View {
                 factory.createNameAppView()
                 factory.createCardView()
                     .layoutPriority(1)
+                #if os(iOS)
                 factory.createTrackTableView()
                     .padding(.leading, -16.0)
+                #endif
                 factory.createPlayer()
             }
             .padding(8.0)
+            #if os(macOS)
+            VStack(alignment: .leading, spacing: 80.0) {
+                Spacer()
+                factory.createTrackTableView()
+                    .padding(.leading, -16.0)
+                    .background(Color.clear)
+                Spacer()
+            }
+            #endif
             factory.createSplitView()
             factory.createMenuView()
         }

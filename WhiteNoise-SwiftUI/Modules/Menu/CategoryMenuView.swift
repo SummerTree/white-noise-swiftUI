@@ -25,6 +25,7 @@ struct CategoryMenuView: View {
                     .renderingMode(.original)
                     .foregroundColor(.clear)
             }
+            .buttonStyle(PlainButtonStyle())
             .frame(width: 40.0, height: 40.0)
 
             ScrollView(showsIndicators: false) {
@@ -34,6 +35,7 @@ struct CategoryMenuView: View {
                     }) {
                         TextMenuItem(viewModel: categoryViewModel)
                     }
+                    .buttonStyle(PlainButtonStyle())
                     .padding(.vertical, 40)
                 }
             }

@@ -6,6 +6,7 @@
 //  Copyright © 2020 Alexandra Bashkirova. All rights reserved.
 //
 
+#if os(iOS)
 import UIKit
 
 extension String {
@@ -21,3 +22,22 @@ extension String {
         return size.height
     }
 }
+#else
+
+import AppKit
+
+extension String {
+    func widthOfString(usingFont font: NSFont) -> CGFloat {
+        let fontAttributes = [NSAttributedString.Key.font: font]
+        let size = self.size(withAttributes: fontAttributes)
+        return size.width
+    }
+    
+    func heightOfString(usingFont font: NSFont) -> CGFloat {
+        let fontAttributes = [NSAttributedString.Key.font: font]
+        let size = self.size(withAttributes: fontAttributes)
+        return size.height
+    }
+}
+
+#endif

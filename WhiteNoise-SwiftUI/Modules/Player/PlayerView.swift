@@ -36,6 +36,7 @@ struct PlayerView: View {
             }) {
                 viewModel.isPlayed ? Image("Pause") : Image("Play")
             }
+            .buttonStyle(PlainButtonStyle())
             volumeSlider
         }
         .foregroundColor(.clear)
