@@ -10,6 +10,8 @@ import SwiftUI
 
 struct CategoryCardView: View {
     @ObservedObject var viewModel: CategoryCardViewModel
+    @State var timeString = ""
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     init(viewModel: CategoryCardViewModel) {
         self.viewModel = viewModel
@@ -31,14 +33,15 @@ struct CategoryCardView: View {
                     title: title,
                     image: image,
                     number: number,
-                    desctiption: description)
+                    desctiption: description,
+                    startPlayDate: viewModel.startPlayDate)
             )
         } else {
             return AnyView(placeholder)
         }
     }
     
-    private func createCard(title: String, image: String, number: String, desctiption: String) -> some View {
+    private func createCard(title: String, image: String, number: String, desctiption: String, startPlayDate: Date?) -> some View {
         return VStack(alignment: .leading, spacing: 10.0) {
                 Text(title)
                     .font(.system(size: 32.0, weight: .semibold, design: .rounded))
@@ -50,9 +53,22 @@ struct CategoryCardView: View {
                             .scaledToFill()
                         VStack(alignment: .leading) {
                             Spacer()
-                            Text(number)
-                                .font(.system(size: 54.0, weight: .bold, design: .rounded))
-                                .foregroundColor(.white)
+                            HStack(alignment: .bottom) {
+                                Text(number)
+                                    .font(.system(size: 54.0, weight: .bold, design: .rounded))
+                                    .foregroundColor(.white)
+                                if let startPlayDate = viewModel.startPlayDate {
+                                    Text("\(timeString)")
+                                        .onReceive(timer) { _ in
+                                            timeString = self.stringFromDate(date: startPlayDate)
+                                        }
+                                        .font(.system(size: 16.0, weight: .regular, design: .rounded))
+                                        .foregroundColor(.white)
+                                        .lineLimit(nil)
+                                        .padding([.trailing, .bottom], 16.0)
+                                }
+                                
+                            }
                             Text(desctiption)
                                 .font(.system(size: 16.0, weight: .regular, design: .rounded))
                                 .foregroundColor(.white)
@@ -70,6 +86,14 @@ struct CategoryCardView: View {
            
         }
         .foregroundColor(.clear)
+    }
+    
+    private func stringFromDate(date: Date) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .positional
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.maximumUnitCount = 2
+        return formatter.string(from: date, to: Date()) ?? ""
     }
 }
 

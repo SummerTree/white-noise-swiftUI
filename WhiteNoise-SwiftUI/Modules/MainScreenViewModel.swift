@@ -90,7 +90,7 @@ extension MainScreenViewModel: CategoryMenuDelegate {
 extension MainScreenViewModel: MusicListDelegate {
     func didSelect(audioTrack: AudioData, isPlayed: Bool) {
         playerViewModel.isPlayed = isPlayed
-
+        cardViewModel.startPlayDate = isPlayed ? Date() : nil
         if (isPlayed) {
             player.setAudio(audioTrack)
             player.play()
