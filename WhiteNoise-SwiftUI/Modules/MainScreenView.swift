@@ -10,8 +10,6 @@ import SwiftUI
 
 struct MainScreenView: View {
     @ObservedObject var viewModel: MainScreenViewModel
-    
-    @State var minutes: Int = 0;
 
     init(viewModel: MainScreenViewModel) {
         self.viewModel = viewModel
@@ -25,8 +23,13 @@ struct MainScreenView: View {
         return HStack {
             VStack(alignment: .leading, spacing: 24.0) {
                 factory.createNameAppView()
-                factory.createCardView()
-                    .layoutPriority(1)
+                HStack {
+                    factory.createCardView()
+                        .layoutPriority(1)
+                    factory.createTrackTableView()
+                        .padding(.top, 35.0)
+                        .background(Color.clear)
+                }
                 #if os(iOS)
                 factory.createTrackTableView()
                     .padding(.leading, -16.0)
@@ -34,24 +37,22 @@ struct MainScreenView: View {
                 factory.createPlayer()
             }
             .padding(8.0)
-            #if os(macOS)
-            VStack(alignment: .leading) {
-                factory.createTrackTableView()
-                    .padding(.top, 80.0)
-                    .background(Color.clear)
-                HStack {
-                    Text("Minutes")
-                    Picker("", selection: $minutes){
-                        let times = [30, 60, 90]
-                        ForEach(times, id: \.self) { i in
-                            Text("\(i) min").tag(i)
-                        }
-                    }.pickerStyle(PopUpButtonPickerStyle())
-                }
-                .padding(.bottom, 40)
-                Spacer()
-            }
-            #endif
+//            #if os(macOS)
+//            VStack(alignment: .leading) {
+//
+//                HStack {
+//                    Text("Minutes")
+//                    Picker("", selection: $minutes){
+//                        let times = [30, 60, 90]
+//                        ForEach(times, id: \.self) { i in
+//                            Text("\(i) min").tag(i)
+//                        }
+//                    }.pickerStyle(PopUpButtonPickerStyle())
+//                }
+//                .padding(.bottom, 40)
+//                Spacer()
+//            }
+//            #endif
             factory.createSplitView()
             factory.createMenuView()
         }
