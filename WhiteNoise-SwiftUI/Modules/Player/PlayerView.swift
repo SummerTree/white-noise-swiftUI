@@ -36,7 +36,7 @@ struct PlayerView: View {
                     self.volumeChanged()
                 }),
                 in: 0...1,
-                step: 0.01)
+                step: 0.1)
         }
     }
 
