@@ -14,7 +14,6 @@ class CategoryCardViewModel: ObservableObject {
     @Published var description: String?
     @Published var numberAudio: String?
     @Published var imageName: String?
-    @Published var startPlayDate: Date?
 
     init(category: CategoryData?) {
         self.category = category
@@ -30,6 +29,5 @@ class CategoryCardViewModel: ObservableObject {
         self.imageName = category.image
         let count = category.audioList.count
         self.numberAudio = count < 10 ? "0\(count)" : "\(count)"
-        self.startPlayDate = Date()
     }
 }
